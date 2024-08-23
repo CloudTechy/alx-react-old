@@ -1,0 +1,19 @@
+{
+  "name": "task_0",
+  "version": "0.1.0",
+  "description": "Webpack task 0",
+  "main": "index.js",
+  "author": "Onyekelu Chukwuebuka",
+  "license": "ISC",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "watch": "webpack --mode development --watch"
+  },
+  "devDependencies": {
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}
