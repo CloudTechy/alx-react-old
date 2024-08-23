@@ -1,38 +1,63 @@
+const { watch, watchFile } = require("fs");
 const path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: {
-    main: path.resolve(__dirname, "./js/dashboard_main.js"),
-  },
+  entry: "./js/dashboard_main.js",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
   },
   performance: {
-    maxAssetSize: 1000000,
     maxEntrypointSize: 1000000,
+    maxAssetSize: 1000000,
   },
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: ["style-loader", "css-loader"],
+        include: [path.resolve(__dirname, "css")],
       },
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+        test: /\.(png|jpg|gif|svg)$/i,
         type: "asset/resource",
+        generator: {
+          filename: "assets/[name][ext][query]", // Place images in public/assets/
+        },
         use: [
           "file-loader",
           {
             loader: "image-webpack-loader",
             options: {
-              bypassOnDebug: true,
-              disable: true,
+              bypassOnDebug: true, // Skip optimization in development
+              disable: true, // Disable the loader in development
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              optipng: {
+                enabled: true,
+              },
+              pngquant: {
+                quality: [0.65, 0.9],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 75,
+              },
             },
           },
         ],
+        include: [path.resolve(__dirname, "images")],
       },
     ],
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    ignored: /node_modules/,
   },
 };
